@@ -74,11 +74,7 @@ Para testar o projeto basta abrir a sua plataforma de API (Postman ou Insomnia, 
 
 ```
 {
-	"id_drone":"3",
-	"latitude":"2330.0",
-	"longitude":"1230.3",
-	"umidade":"0.352",
-	"rastreamento_ativo": true
+
 }
 ```
 
