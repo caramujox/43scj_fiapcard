@@ -23,6 +23,7 @@ import javax.batch.runtime.JobExecution;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -66,7 +67,7 @@ public class AlunoController {
         Resource resource = adequaResourceDoBatch(file);
 
 
-        JobParameters param = new JobParametersBuilder().addString("name", "alunoJob").toJobParameters();
+        JobParameters param = new JobParametersBuilder().addString("name", "alunoJob").addString("dateTime", LocalDateTime.now().toString()).toJobParameters();
         service.handleFileUpload(resource, param);
 
         return "Cadastro de batch efetuado com sucesso!";

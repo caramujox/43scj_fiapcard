@@ -15,6 +15,8 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
 @Service
@@ -22,13 +24,15 @@ import java.util.stream.Stream;
 @Slf4j
 public class StorageServiceImpl implements StorageService {
 
-    private final Path root = Paths.get("target");
+    private final Path root = Paths.get("target\\");
+    private final Path batchFilePath = Paths.get(root.resolve(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyymmdd_HHmmss"))).toString());
 
     @Override
     public void init() {
 
         try {
             Files.createDirectory(root);
+            Files.createDirectory(batchFilePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +41,7 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void save(MultipartFile file) {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), this.batchFilePath.resolve(file.getOriginalFilename()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -45,14 +49,14 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public File save(String fileName) {
-       return new File(root+fileName);
+    public File save(String fileName) throws IOException {
+        return new File(batchFilePath.resolve(fileName).toString());
     }
 
     @Override
     public Resource load(String filename) {
         try {
-            Path file = root.resolve(filename);
+            Path file = batchFilePath.resolve(filename);
             Resource resource = new UrlResource(file.toUri());
 
             if (resource.exists() || resource.isReadable()) {

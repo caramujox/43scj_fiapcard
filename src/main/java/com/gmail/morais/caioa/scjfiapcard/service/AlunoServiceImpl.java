@@ -100,7 +100,7 @@ public class AlunoServiceImpl implements AlunoService {
     }
 
     private void trataFileTxt(Resource arquivoRaw) throws IOException {
-        File arquivoTratado = storageService.save("/lista_alunos_tratada.txt");
+        File arquivoTratado = storageService.save("lista_alunos_tratada.txt");
         FileUtils.write(arquivoTratado, "", StandardCharsets.UTF_8);
         List<String> lines = FileUtils.readLines(arquivoRaw.getFile(), StandardCharsets.UTF_8);
         lines.forEach(line -> {
